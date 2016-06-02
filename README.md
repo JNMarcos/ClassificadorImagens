@@ -1,1 +1,1 @@
-# IA_ClassificadorImagem
+# ClassificadorImagens
