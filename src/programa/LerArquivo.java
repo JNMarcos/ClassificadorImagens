@@ -16,6 +16,39 @@ public class LerArquivo {
 	static Scanner scannerAtributo = null;
 
 	private LerArquivo(){
+		//não se pode instanicar a classe LerArquivo porr fora da classe
+	}
+
+	// passa pela parte do arquivo que não possui informação 'útil' para
+	// o cálculo em si
+	private static void pularArrobas(){
+		// o motivo de ser mais três é pq tem espaço para o tipo, informação
+		for (int i = 0; i < Dados.N_ATRIBUTOS + 3; i++){
+			scannerLinha.next();
+		}
+	}
+	
+	private static int acharValorCoordenadaNoVetor(int coordenadaVetor){
+		String vetorString;
+		
+		vetorString = scannerLinha.next();
+		System.out.println(vetorString);
+
+		//sacnner atributo vai até o atributo que se deseja, dado uma string
+		scannerAtributo = new Scanner(vetorString)
+				.useDelimiter(",");
+
+		//passa pelos atributos da string que não são o atributo que se deseja
+		for (int i = 0; i < coordenadaVetor; i++){
+			scannerAtributo.nextInt();
+		}
+		
+		//pega o atributo que se deseja
+		return scannerAtributo.nextInt();
+	}
+
+	public static void lerDados(int coordenadaVetor){
+		int valorAtributoNoVetor = 0;
 		try {
 			scannerLinha = new Scanner(new FileReader("data.txt"))
 					.useDelimiter("\\n");
@@ -23,52 +56,21 @@ public class LerArquivo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	// passa pela parte do arquivo que não possui informação 'útil' para
-	// o cálculo em si
-	public static void pularArrobas(){
-		// o motivo de ser mais três é pq tem espaço para o tipo, informação
-		for (int i = 0; i < Dados.N_ATRIBUTOS + 3; i++){
-			scannerLinha.next();
-		}
-	}
-
-	public static void lerDados(int nAtributo){
-		double media = 0;
-		int soma = 0;
-		int atributo = 0;
-
-
-		String vetorString;
-
+		pularArrobas();
 		while (scannerLinha.hasNext()){
-			vetorString = scannerLinha.next();
-			System.out.println(vetorString);
-
-			//sacnner atributo vai até o atributo que se deseja, dado uma string
-			scannerAtributo = new Scanner(vetorString)
-					.useDelimiter(",");
-
-			for (int i = 0; i < nAtributo; i++){
-				scannerAtributo.nextInt();
-			}
-
-			atributo = scannerAtributo.nextInt();
-			System.out.println(atributo);
-			soma = soma + atributo;
-
+			valorAtributoNoVetor = acharValorCoordenadaNoVetor(coordenadaVetor);
 			//fecha o scannerAtributo
+			
 			scannerAtributo.close();
+			System.out.println(valorAtributoNoVetor);
+			//menos 1 porque o array começa com pos 0
+			AlgoritmoBayes.calcularSoma(coordenadaVetor - 1, valorAtributoNoVetor);
 		}
-		
-		media = soma/Dados.N_ATRIBUTOS;
-		System.out.println(media);
+		scannerLinha.close();
 	}
 	
 	public static void main(String[] bayesXAltura){
-		LerArquivo la = new LerArquivo();
-		pularArrobas();
-		lerDados(12);
+		Dados dados = new Dados();
+		LerArquivo.lerDados(5);
 	}
 }
