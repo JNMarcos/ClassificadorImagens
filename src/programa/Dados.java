@@ -9,7 +9,7 @@ package programa;
  */
 public class Dados {
 	
-	private static final int N_ATRIBUTOS = 255;
+	public static final int N_ATRIBUTOS = 255;
 	private Double[] medias;
 	private Double[] desviosPadrao;
 	
