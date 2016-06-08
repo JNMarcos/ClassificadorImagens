@@ -64,7 +64,10 @@ public class LerArquivo {
 			scannerAtributo.close();
 			System.out.println(valorAtributoNoVetor);
 			//menos 1 porque o array começa com pos 0
-			AlgoritmoBayes.calcularSoma(coordenadaVetor - 1, valorAtributoNoVetor);
+			Dados.setarAtributoDaCoordenadaDoVetor(valorAtributoNoVetor);
+			
+			//resíduo
+			//AlgoritmoBayes.calcularSoma(coordenadaVetor - 1, valorAtributoNoVetor);
 		}
 		scannerLinha.close();
 	}
