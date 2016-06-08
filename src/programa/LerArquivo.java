@@ -84,9 +84,5 @@ public class LerArquivo {
 		
 			AlgoritmoBayes.calcularMedias();
 			AlgoritmoBayes.calcularDesviosPadrao();
-
-		
-		
-		
 	}
 }

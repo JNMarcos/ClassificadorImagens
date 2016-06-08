@@ -25,7 +25,7 @@ public class AlgoritmoBayes {
 			}
 			Dados.setarMediaDaCoordenadaClasseA(coordenada, mediaClasseA); 
 			Dados.setarMediaDaCoordenadaClasseB(coordenada, mediaClasseB); 
-			System.out.println(mediaClasseA + "   " + mediaClasseB);
+			System.out.println(mediaClasseA + "   " + mediaClasseB + "\n");
 
 			//seta media para zero novamente
 			mediaClasseA = 0;  
@@ -108,25 +108,40 @@ public class AlgoritmoBayes {
 		return (i+1)*(j+1) + (i)*(Dados.nExemplos - (j+1));
 	}
 
-	/*
+	
 	//calcula função densidade de uma só vez
-	public static void calcularFuncaoDensidade(){
-		double densidade = 0.0;
+	public static void calcularFuncoesDensidade(){
+		double densidadeClasseA = 0.0;
+		double densidadeClasseB = 0.0;
 		int posicaoArrayList = 0;
+		int x = 0;
+		
 		for (int coordenada = 0; coordenada < Dados.N_ATRIBUTOS; coordenada++){
 			for (int j = 0; j < Dados.getAtributosDaCoordenada().size(); j++){
-				posicaoArrayList = calcularPosicaoArrayList(coordenada, j);
-				densidade = (1/(Math.sqrt(2*Math.PI)*Dados.
-						getDesviosPadrao()[coordenada])) * 
-						Math.pow(Math.E,(Math.pow(Dados.
-								getAtributosDaCoordenada().get(posicaoArrayList) - 
-								Dados.getMedias()[coordenada], 2)/(2*Math.
-										pow(Dados.getDesviosPadrao()[coordenada], 2))) );
+				posicaoArrayList = calcularPosicaoArrayList(coordenada, j) - 1;
+				x = Dados.getAtributosDaCoordenada().get(posicaoArrayList);
+				
+				//densidade em relação à classe A
+				densidadeClasseA = (1/(Math.sqrt(2*Math.PI)*Dados.
+						getDesviosPadraoClasseA()[coordenada])) * 
+						Math.pow(Math.E,(Math.pow(x - 
+								Dados.getMediasClasseA()[coordenada], 2)/(2*Math.
+										pow(Dados.getDesviosPadraoClasseA()[coordenada], 2))) );
+				
+				densidadeClasseB = (1/(Math.sqrt(2*Math.PI)*Dados.
+						getDesviosPadraoClasseB()[coordenada])) * 
+						Math.pow(Math.E,(Math.pow(x - 
+								Dados.getMediasClasseB()[coordenada], 2)/(2*Math.
+										pow(Dados.getDesviosPadraoClasseB()[coordenada], 2))) );
 			}
-			//falta terminar
+			Dados.setarDensidadeDaCoordenadaClasseA(densidadeClasseA);
+			Dados.setarDensidadeDaCoordenadaClasseB(densidadeClasseB);
+			System.out.println(densidadeClasseA + "   " + densidadeClasseB + "\n");
+			densidadeClasseA = 0.0;
+			densidadeClasseB = 0.0;
 		}
 	}
-	*/
+	
 	
 	public static void calcularProbabilidade(){
 		

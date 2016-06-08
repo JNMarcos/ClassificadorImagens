@@ -23,7 +23,8 @@ public class Dados {
 	//contém uma lista de uma determinada coluna dos vetores que servem como 
 	// dados
 	private static List<Integer> atributosDaCoordenada;
-	private static List<Double> densidadeDaCoordenada;
+	private static List<Double> densidadeDaCoordenadaClasseA;
+	private static List<Double> densidadeDaCoordenadaClasseB;
 	
 	public Dados(){
 		instanciarAtributos();
@@ -35,7 +36,8 @@ public class Dados {
 		Dados.desviosPadraoClasseA = new Double[N_ATRIBUTOS]; 
 		Dados.desviosPadraoClasseB = new Double[N_ATRIBUTOS]; 
 		Dados.atributosDaCoordenada = new ArrayList<Integer>();
-		Dados.densidadeDaCoordenada = new ArrayList<Double>();
+		Dados.densidadeDaCoordenadaClasseA = new ArrayList<Double>();
+		Dados.densidadeDaCoordenadaClasseB = new ArrayList<Double>();
 	}
 	
 	private void preencherMatrizesComZeros() {
@@ -59,22 +61,27 @@ public class Dados {
 	public static Double[] getDesviosPadraoClasseB() {
 		return desviosPadraoClasseB;
 	}
-	
 	public static List<Integer> getAtributosDaCoordenada() {
 		return atributosDaCoordenada;
 	}
-
+	public static List<Double> getDensidadeDaCoordenadaClasseA() {
+		return densidadeDaCoordenadaClasseA;
+	}
+	public static List<Double> getDensidadeDaCoordenadaClasseB() {
+		return densidadeDaCoordenadaClasseB;
+	}
+	
 	//não precisa de coordenada pois ele já vai adicionar no lugar correto
 	public static void setarAtributoDaCoordenadaDoVetor(int valor){
 		Dados.getAtributosDaCoordenada().add(valor);
 	}
 	
-	public static List<Double> getDensidadeDaCoordenada() {
-		return densidadeDaCoordenada;
+	public static void setarDensidadeDaCoordenadaClasseA(double valor){
+		Dados.getDensidadeDaCoordenadaClasseA().add(valor);
 	}
 	
-	public static void setarDensidadeDaCoordenada(double valor){
-		Dados.getDensidadeDaCoordenada().add(valor);
+	public static void setarDensidadeDaCoordenadaClasseB(double valor){
+		Dados.getDensidadeDaCoordenadaClasseB().add(valor);
 	}
 	
 	public static void setarMediaDaCoordenadaClasseA(int coordenada, double valor){
