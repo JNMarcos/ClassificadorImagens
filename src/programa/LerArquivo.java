@@ -71,6 +71,6 @@ public class LerArquivo {
 	
 	public static void main(String[] bayesXAltura){
 		Dados dados = new Dados();
-		LerArquivo.lerDados(5);
+		LerArquivo.lerDados(7);
 	}
 }

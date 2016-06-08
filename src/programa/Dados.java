@@ -3,6 +3,9 @@
  */
 package programa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author JN
  *
@@ -12,13 +15,18 @@ public class Dados {
 	private static Double[] medias;
 	private static Double[] desviosPadrao;
 	
+	//contém uma lista de uma determinada coluna dos vetores que servem como 
+	// dados
+	private static List<Integer> atributosDaCoordenada;
+	
 	public Dados(){
 		setMedias();
 		setDesviosPadrao();
-		setInicializarComZeros();
+		setAtributosDaCoordenada();
+		preencherMatrizesComZeros();
 	}
 	
-	private void setInicializarComZeros() {
+	private void preencherMatrizesComZeros() {
 		for (int i = 0; i < N_ATRIBUTOS; i++){
 			medias[i] = 0.0;
 			desviosPadrao[i] = 0.0;
@@ -29,13 +37,27 @@ public class Dados {
 		return medias;
 	}
 	public static void setMedias() {
-		medias = new Double[N_ATRIBUTOS];
+		Dados.medias = new Double[N_ATRIBUTOS];
 	}
 	public static Double[] getDesviosPadrao() {
 		return desviosPadrao;
 	}
 	public static void setDesviosPadrao() {
-		desviosPadrao = new Double[N_ATRIBUTOS]; 
+		Dados.desviosPadrao = new Double[N_ATRIBUTOS]; 
+	}
+	
+	public static List<Integer> getAtributosDaCoordenada() {
+		return atributosDaCoordenada;
+	}
+
+	public static void setAtributosDaCoordenada() {
+		Dados.atributosDaCoordenada = new ArrayList<Integer>();
+	}
+	
+	
+	//não precisa de coordenada pois ele já vai adicionar no lugar correto
+	public static void setarAtributoDaCoordenadaDoVetor(int valor){
+		Dados.getAtributosDaCoordenada().add(valor);
 	}
 	
 	public static void setarMediaNaCoordenada(int coordenada, double valor){
