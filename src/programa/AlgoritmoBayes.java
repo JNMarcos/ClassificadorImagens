@@ -12,7 +12,7 @@ public class AlgoritmoBayes {
 		int posicaoArrayList = 0;
 		for (int coordenada = 0; coordenada < Dados.N_ATRIBUTOS; coordenada++){
 			for (int j = 0; j < Dados.nExemplos; j++){
-				posicaoArrayList = calcularPosicaoArrayList(coordenada, j);
+				posicaoArrayList = calcularPosicaoArrayList(coordenada, j) - 1;
 				//considera-se que a base sempre estará ordenada
 				  // dividido por 2 pq só há duas classes
 				if (j < Dados.nExemplos/2){
@@ -25,6 +25,7 @@ public class AlgoritmoBayes {
 			}
 			Dados.setarMediaDaCoordenadaClasseA(coordenada, mediaClasseA); 
 			Dados.setarMediaDaCoordenadaClasseB(coordenada, mediaClasseB); 
+			System.out.println(mediaClasseA + "   " + mediaClasseB);
 
 			//seta media para zero novamente
 			mediaClasseA = 0;  
@@ -55,9 +56,9 @@ public class AlgoritmoBayes {
 		int posicaoArrayList = 0;
 		for (int coordenada = 0; coordenada < Dados.N_ATRIBUTOS; coordenada++){
 			for (int j = 0; j < Dados.nExemplos; j++){
-				posicaoArrayList = calcularPosicaoArrayList(coordenada, j);
+				posicaoArrayList = calcularPosicaoArrayList(coordenada, j) - 1;
 				if (j < Dados.nExemplos/2){
-				varianciaClasseA = varianciaClasseA +  Math.pow(Dados.getAtributosDaCoordenada().get(posicaoArrayList) - 
+					varianciaClasseA = varianciaClasseA +  Math.pow(Dados.getAtributosDaCoordenada().get(posicaoArrayList) - 
 						Dados.getMediasClasseA()[coordenada], 2);
 				} else{
 					varianciaClasseB = varianciaClasseB +  Math.pow(Dados.getAtributosDaCoordenada().get(posicaoArrayList) - 
@@ -71,6 +72,8 @@ public class AlgoritmoBayes {
 			
 			desvioPadraoClasseA = Math.sqrt(varianciaClasseA);
 			desvioPadraoClasseB = Math.sqrt(varianciaClasseB);
+			System.out.println(desvioPadraoClasseA + "   " + desvioPadraoClasseB);
+			
 			
 			Dados.setarDesvioPadraoDaCoordenadaClasseA(coordenada, desvioPadraoClasseA);
 			Dados.setarDesvioPadraoDaCoordenadaClasseB(coordenada, desvioPadraoClasseB);
