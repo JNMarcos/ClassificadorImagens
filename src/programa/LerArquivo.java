@@ -65,15 +65,28 @@ public class LerArquivo {
 			System.out.println(valorAtributoNoVetor);
 			//menos 1 porque o array começa com pos 0
 			Dados.setarAtributoDaCoordenadaDoVetor(valorAtributoNoVetor);
-			
-			//resíduo
-			//AlgoritmoBayes.calcularSoma(coordenadaVetor - 1, valorAtributoNoVetor);
 		}
 		scannerLinha.close();
 	}
 	
 	public static void main(String[] bayesXAltura){
 		Dados dados = new Dados();
-		LerArquivo.lerDados(7);
+
+		for (int i = 1; i <= Dados.N_ATRIBUTOS; i++){
+			LerArquivo.lerDados(i);
+		}
+			Dados.nExemplos = Dados.getAtributosDaCoordenada().size()/
+					Dados.N_ATRIBUTOS;
+			
+			System.out.println(Integer.MAX_VALUE);
+			System.out.println(Dados.nExemplos);
+			System.out.println(Dados.getAtributosDaCoordenada().size());
+		
+			AlgoritmoBayes.calcularMedias();
+			AlgoritmoBayes.calcularDesviosPadrao();
+
+		
+		
+		
 	}
 }
