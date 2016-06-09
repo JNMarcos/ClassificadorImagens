@@ -4,6 +4,7 @@
 package programa;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -11,92 +12,91 @@ import java.util.List;
  *
  */
 public class Dados {
-	public static final int N_ATRIBUTOS = 255;
+	//número de atributos é igual ao histograma + id de classe
+	public static final int N_ATRIBUTOS = 256;
+	public static final String[] NOMES_CLASSES = {"cifar_8","cifar_9"};
+	public static final int N_CLASSES = Dados.NOMES_CLASSES.length;
+
+	// número de exemplos usados, obs: o programa calcula
 	public static int nExemplos;
-	public static double probabilidadeClasseA = 0.5;
-	public static double probabilidadeClasseB = 0.5;
-	private static Double[] mediasClasseA;
-	private static Double[] mediasClasseB;
-	private static Double[] desviosPadraoClasseA;
-	private static Double[] desviosPadraoClasseB;
-	
+
+	//probabilidade a priori das classes
+	public static Hashtable<String, Number> probabilidadesAPriori;
+
+
+	//médias de cada um dos atributos em relação às classes
+	private static Double[][] medias;
+
+	//desvios-padrão de cada um dos atributos para cada uma das classes
+	private static Double[][] desviosPadrao;
+
 	//contém uma lista de uma determinada coluna dos vetores que servem como 
 	// dados
 	private static List<Integer> atributosDaCoordenada;
-	private static List<Double> densidadeDaCoordenadaClasseA;
-	private static List<Double> densidadeDaCoordenadaClasseB;
-	
+	private static List<Double> densidadeDaCoordenada;
+
 	public Dados(){
 		instanciarAtributos();
 		preencherMatrizesComZeros();
 	}
 	private void instanciarAtributos() {
-		Dados.mediasClasseA = new Double[N_ATRIBUTOS];
-		Dados.mediasClasseB = new Double[N_ATRIBUTOS];
-		Dados.desviosPadraoClasseA = new Double[N_ATRIBUTOS]; 
-		Dados.desviosPadraoClasseB = new Double[N_ATRIBUTOS]; 
+		Dados.medias = new Double[N_CLASSES][N_ATRIBUTOS];
+		Dados.desviosPadrao = new Double[N_CLASSES][N_ATRIBUTOS]; 
 		Dados.atributosDaCoordenada = new ArrayList<Integer>();
-		Dados.densidadeDaCoordenadaClasseA = new ArrayList<Double>();
-		Dados.densidadeDaCoordenadaClasseB = new ArrayList<Double>();
+		Dados.densidadeDaCoordenada = new ArrayList<Double>();
 	}
 	
 	private void preencherMatrizesComZeros() {
-		for (int i = 0; i < N_ATRIBUTOS; i++){
-			mediasClasseA[i] = 0.0;
-			desviosPadraoClasseA[i] = 0.0;
-			mediasClasseB[i] = 0.0;
-			desviosPadraoClasseB[i] = 0.0;
+		for(int i = 0; i < N_CLASSES; i++){
+			for (int j = 0; j < N_ATRIBUTOS; j++){
+				medias[i][j] = 0.0;
+				desviosPadrao[i][j] = 0.0;
+			}
 		}
 	}
-
-	public static Double[] getMediasClasseA() {
-		return mediasClasseA;
+	
+	public static Double[][] getMedias() {
+		return medias;
 	}
-	public static Double[] getMediasClasseB() {
-		return mediasClasseB;
-	}
-	public static Double[] getDesviosPadraoClasseA() {
-		return desviosPadraoClasseA;
-	}
-	public static Double[] getDesviosPadraoClasseB() {
-		return desviosPadraoClasseB;
+	public static Double[][] getDesviosPadrao() {
+		return desviosPadrao;
 	}
 	public static List<Integer> getAtributosDaCoordenada() {
 		return atributosDaCoordenada;
 	}
-	public static List<Double> getDensidadeDaCoordenadaClasseA() {
-		return densidadeDaCoordenadaClasseA;
+	public static List<Double> getDensidadeDaCoordenada() {
+		return densidadeDaCoordenada;
 	}
-	public static List<Double> getDensidadeDaCoordenadaClasseB() {
-		return densidadeDaCoordenadaClasseB;
+	public static Hashtable<String,Number> getProbabilidadesAPriori(){
+		return probabilidadesAPriori;
 	}
-	
+	public static void setProbabilidadeAPriori(double probabilidade){
+		
+	}
+	public static void setarProbabilidadesAPriori(Hashtable<String,Number> probabilidades){
+		Dados.probabilidadesAPriori = probabilidades;
+		Number nExemplos = new Integer(Dados.nExemplos); 
+		for (int i = 0; i < Dados.N_CLASSES; i++){
+			probabilidadesAPriori.put(Dados.NOMES_CLASSES[i], 
+					probabilidadesAPriori.get(Dados.NOMES_CLASSES[i]).doubleValue() 
+							/ nExemplos.intValue());
+			System.out.println(probabilidades.get(Dados.NOMES_CLASSES[i]));
+		}
+	}
 	//não precisa de coordenada pois ele já vai adicionar no lugar correto
 	public static void setarAtributoDaCoordenadaDoVetor(int valor){
 		Dados.getAtributosDaCoordenada().add(valor);
 	}
-	
-	public static void setarDensidadeDaCoordenadaClasseA(double valor){
-		Dados.getDensidadeDaCoordenadaClasseA().add(valor);
+
+	public static void setarDensidadeDaCoordenada(double valor){
+		Dados.getDensidadeDaCoordenada().add(valor);
 	}
-	
-	public static void setarDensidadeDaCoordenadaClasseB(double valor){
-		Dados.getDensidadeDaCoordenadaClasseB().add(valor);
+
+	public static void setarMediaDaCoordenada(int linha,int coluna, double valor){
+		medias[linha][coluna] =  valor;
 	}
-	
-	public static void setarMediaDaCoordenadaClasseA(int coordenada, double valor){
-		mediasClasseA[coordenada] =  valor;
-	}
-	
-	public static void setarMediaDaCoordenadaClasseB(int coordenada, double valor){
-		mediasClasseB[coordenada] =  valor;
-	}
-	
-	public static void setarDesvioPadraoDaCoordenadaClasseA(int coordenada, double valor){
-		desviosPadraoClasseA[coordenada] = valor;
-	}
-	
-	public static void setarDesvioPadraoDaCoordenadaClasseB(int coordenada, double valor){
-		desviosPadraoClasseB[coordenada] = valor;
+
+	public static void setarDesvioPadraoDaCoordenada(int linha,int coluna, double valor){
+		desviosPadrao[linha][coluna] = valor;
 	}
 }
