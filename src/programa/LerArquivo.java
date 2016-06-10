@@ -5,8 +5,9 @@ package programa;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Hashtable;
 import java.util.Scanner;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
 
 /**
  * @author JN
@@ -28,7 +29,8 @@ public class LerArquivo {
 			scannerLinha.next();
 		}
 	}
-	/*
+	
+	@Ignore
 	private static int acharValorCoordenadaNoVetor(int coordenadaVetor){
 		String vetorString;
 		
@@ -48,6 +50,7 @@ public class LerArquivo {
 		return scannerAtributo.nextInt();
 	}
 	
+	@Ignore
 	public static void lerDados(int coordenadaVetor){
 		int valorAtributoNoVetor = 0;
 		try {
@@ -69,17 +72,13 @@ public class LerArquivo {
 		}
 		scannerLinha.close();
 	}
-	*/
 	
 	public static void lerDados(){
-		int nExemplos = 0;
-		Integer adicionarUm = new Integer(1);
-		Hashtable<String,Number> nExemplosPorClasse = 
-				new Hashtable<String,Number>();
+		int[] nExemplosPorClasse = 	new int[Dados.N_CLASSES];
 		
 		//
 		for(int i = 0; i < Dados.N_CLASSES; i++){
-			nExemplosPorClasse.put(Dados.NOMES_CLASSES[i], 0);
+			nExemplosPorClasse[i] = 0;
 		}
 		
 		String vetorString;
@@ -96,63 +95,75 @@ public class LerArquivo {
 		}
 		pularArrobas();
 		while (scannerLinha.hasNext()){	
-			nExemplos++;
 			vetorString = scannerLinha.next();
 			System.out.println(vetorString);
-
+			
 			//sacnner atributo vai até o atributo que se deseja, dado uma string
 			scannerAtributo = new Scanner(vetorString)
 					.useDelimiter(",");
-
+			scannerAtributo.next();
+			
 			//passa pelos atributos da string que não são o atributo que se deseja
 			//menos 1 pq tem o último que é uma string.
-			for (int i = 0; i <= Dados.N_ATRIBUTOS - 1; i++){
+			for (int i = 0; i < Dados.N_ATRIBUTOS - 1; i++){
 				valorAtributoNoVetor = scannerAtributo.nextInt();
 				Dados.setarAtributoDaCoordenadaDoVetor(valorAtributoNoVetor);
-				System.out.print(valorAtributoNoVetor + "   ");
+				//desmarque caso queira ver cada um dos atributos do vetor
+				//sendo passado para o ArrayList
+				/*System.out.print(valorAtributoNoVetor + "   ");*/
 			}
 			
 			//após passar todos os atributos numéricos, chega ao da classe
 			classeVetor = scannerAtributo.next();
-			System.out.println(classeVetor + "   ");
+			
+			
+			//desmarque caso queira ver a classe do vetor em questão
+			/*System.out.print(classeVetor + " ");*/
 			
 			for (int i = 0; i <  Dados.N_CLASSES; i++){
 				
 				//verifica se a classe no qual o vetor está classificado
 				//contém o nome da classe
 				if (classeVetor.contains(Dados.NOMES_CLASSES[i])){
-					nExemplosPorClasse.put(Dados.NOMES_CLASSES[i],nExemplosPorClasse.
-							get(Dados.NOMES_CLASSES[i]).intValue() + adicionarUm.intValue());
+					nExemplosPorClasse[i] = nExemplosPorClasse[i] + 1;
 					
-					//insere a classe convertido em número para o ArrayList
+					//insere a classe convertido em inteiro para o ArrayList
 					Dados.setarAtributoDaCoordenadaDoVetor(i);
+					System.out.println(i);
 					break;
 				}
 			}
 			//fecha o scannerAtributo			
 			scannerAtributo.close();
 		}
-		Dados.nExemplos = nExemplos;
-		Dados.setarProbabilidadesAPriori(nExemplosPorClasse);
-		System.out.println("\n\n" + nExemplos);
+	
+		//descomente caso queira ver o número de exemplos de uma classe.
+		
+		for (int i = 0; i < Dados.N_CLASSES; i++){
+			System.out.println("nº de exemplos de " + Dados.NOMES_CLASSES[i]  + 
+					": " + nExemplosPorClasse[i]);
+		}
+		
+		
+		//seta o número de exemplos e as prioridades a priori de cada classe
+		Dados.setarNExemplosPorClasse(nExemplosPorClasse);
+		Dados.setarProbabilidadesAPriori();
 		
 		//fecha o scannerLinha
 		scannerLinha.close();
 	}
 	
 	public static void main(String[] bayesXAltura){
-		Dados dados = new Dados();
-
-		//for (int i = 1; i <= Dados.N_ATRIBUTOS; i++){
-			//LerArquivo.lerDados(i);
-		//}
+		Dados.instanciarAtributos();
 		LerArquivo.lerDados();
 
-		System.out.println(Integer.MAX_VALUE);
 		System.out.println(Dados.nExemplos);
 		System.out.println(Dados.getAtributosDaCoordenada().size());
 		
-		//AlgoritmoBayes.calcularMedias();
-		//AlgoritmoBayes.calcularDesviosPadrao();
+		AlgoritmoBayes.calcularMedias();
+		AlgoritmoBayes.calcularDesviosPadrao();
+		AlgoritmoBayes.calcularFuncoesDensidade();
+		AlgoritmoBayes.calcularProbabilidades();
+		//AlgoritmoBayes.decidirClasse();
 	}
 }
