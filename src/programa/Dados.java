@@ -5,7 +5,6 @@ package programa;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -24,7 +23,9 @@ public class Dados {
 
 	//probabilidade a priori das classes
 	public static double[] probabilidadesAPriori;
-
+	
+	//guarda a classe (não o valor) de maior probabilidade de um exemplo
+	public static int[] classeMaiorProbabilidade;
 
 	//médias de cada um dos atributos em relação às classes
 	private static Double[][] medias;
@@ -35,19 +36,27 @@ public class Dados {
 	//desvios-padrão de cada um dos atributos para cada uma das classes
 	private static Double[][] desviosPadrao;
 	
+	//densidades
+	private static Double[][][] densidades;
+	
 	//define as probabilidades de um exemplo pertencer a uma classe
 	private static Double[][] probabilidades;
 
 	//contém uma lista de uma determinada coluna dos vetores que servem como 
 	// dados
 	private static List<Integer> atributosDaCoordenada;
-	private static List<Double> densidadesDosAtributos;
+	//private static List<Double> densidadesDosAtributos;
+	
 
 	private Dados(){
 
 	}
 	public static void instanciarAtributos() {
 		Dados.atributosDaCoordenada = new ArrayList<Integer>();
+		//Dados.probabilidadesAPriori = new double[N_CLASSES];
+		//for (int i = 0; i < Dados.N_CLASSES; i++){
+			//Dados.probabilidadesAPriori[i] = 0.0;
+		//}
 	}
 
 	public static Double[][] getMedias() {
@@ -61,12 +70,18 @@ public class Dados {
 	}
 	public static List<Integer> getAtributosDaCoordenada() {
 		return atributosDaCoordenada;
-	}
+	}/*
 	public static List<Double> getDensidadesDosAtributos() {
 		return densidadesDosAtributos;
+	}*/
+	public static Double[][][] getDensidades() {
+		return densidades;
 	}
 	public static double[] getProbabilidadesAPriori(){
 		return probabilidadesAPriori;
+	}
+	public static int[] getClasseMaiorProbabilidade(){
+		return classeMaiorProbabilidade;
 	}
 	public static Double[][] getProbabilidades(){
 		return probabilidades;
@@ -82,21 +97,24 @@ public class Dados {
 			Dados.nExemplos = Dados.nExemplos + Dados.nExemplosPorClasse[i];
 		}
 	}
-	public static void setarProbabilidadesAPriori(){
-		Dados.probabilidadesAPriori = new double[N_CLASSES];
-		for (int i = 0; i < Dados.N_CLASSES; i++){	
-			Dados.probabilidadesAPriori[i] = Dados.nExemplosPorClasse[i]/Dados.nExemplos;
-		}
+	public static void setarProbabilidadesAPriori(double[] probabilidadesAPriori){
+		Dados.probabilidadesAPriori = probabilidadesAPriori;
 	}
 	public static void setarProbabilidades(Double[][] probabilidades){
 		Dados.probabilidades = probabilidades;
 	}
+	public static void setarClasseMaiorProbabilidade(int[] nDaClasse){
+		Dados.classeMaiorProbabilidade = nDaClasse;
+	}
 	//não precisa de coordenada pois ele já vai adicionar no lugar correto
 	public static void setarAtributoDaCoordenadaDoVetor(int valor){
 		Dados.getAtributosDaCoordenada().add(valor);
-	}
+	}/*
 	public static void setarDensidades(List<Double> densidades){
 		Dados.densidadesDosAtributos = densidades;
+	}*/
+	public static void setarDensidades(Double[][][] densidades){
+		Dados.densidades = densidades;
 	}
 	public static void setarMedias(Double[][] mediasMatriz){
 		Dados.medias =  mediasMatriz;

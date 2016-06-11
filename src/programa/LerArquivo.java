@@ -18,7 +18,7 @@ public class LerArquivo {
 	static Scanner scannerAtributo = null;
 
 	private LerArquivo(){
-		//não se pode instanicar a classe LerArquivo porr fora da classe
+		//não se pode instanciar a classe LerArquivo porr fora da classe
 	}
 
 	// passa pela parte do arquivo que não possui informação 'útil' para
@@ -30,7 +30,7 @@ public class LerArquivo {
 		}
 	}
 	
-	@Ignore
+	/*
 	private static int acharValorCoordenadaNoVetor(int coordenadaVetor){
 		String vetorString;
 		
@@ -50,7 +50,7 @@ public class LerArquivo {
 		return scannerAtributo.nextInt();
 	}
 	
-	@Ignore
+	
 	public static void lerDados(int coordenadaVetor){
 		int valorAtributoNoVetor = 0;
 		try {
@@ -72,19 +72,20 @@ public class LerArquivo {
 		}
 		scannerLinha.close();
 	}
+	*/
 	
 	public static void lerDados(){
 		int[] nExemplosPorClasse = 	new int[Dados.N_CLASSES];
+		double[] probabilidadesAPriori = new double[Dados.N_CLASSES];
+		String vetorString;
+		int valorAtributoNoVetor = 0;
+		String classeVetor;
 		
 		//
 		for(int i = 0; i < Dados.N_CLASSES; i++){
 			nExemplosPorClasse[i] = 0;
+			probabilidadesAPriori[i] = 0.0;
 		}
-		
-		String vetorString;
-		int valorAtributoNoVetor = 0;
-		
-		String classeVetor;
 		
 		try {
 			scannerLinha = new Scanner(new FileReader("bancoTreinamento.txt"))
@@ -93,7 +94,9 @@ public class LerArquivo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		pularArrobas();
+		
 		while (scannerLinha.hasNext()){	
 			vetorString = scannerLinha.next();
 			System.out.println(vetorString);
@@ -101,6 +104,7 @@ public class LerArquivo {
 			//sacnner atributo vai até o atributo que se deseja, dado uma string
 			scannerAtributo = new Scanner(vetorString)
 					.useDelimiter(",");
+			
 			scannerAtributo.next();
 			
 			//passa pelos atributos da string que não são o atributo que se deseja
@@ -129,7 +133,6 @@ public class LerArquivo {
 					
 					//insere a classe convertido em inteiro para o ArrayList
 					Dados.setarAtributoDaCoordenadaDoVetor(i);
-					System.out.println(i);
 					break;
 				}
 			}
@@ -147,7 +150,10 @@ public class LerArquivo {
 		
 		//seta o número de exemplos e as prioridades a priori de cada classe
 		Dados.setarNExemplosPorClasse(nExemplosPorClasse);
-		Dados.setarProbabilidadesAPriori();
+		for (int i = 0; i < Dados.N_CLASSES; i++){
+			probabilidadesAPriori[i] = nExemplosPorClasse[i]/Dados.N_CLASSES;
+		}
+		Dados.setarProbabilidadesAPriori(probabilidadesAPriori);
 		
 		//fecha o scannerLinha
 		scannerLinha.close();
@@ -164,6 +170,6 @@ public class LerArquivo {
 		AlgoritmoBayes.calcularDesviosPadrao();
 		AlgoritmoBayes.calcularFuncoesDensidade();
 		AlgoritmoBayes.calcularProbabilidades();
-		//AlgoritmoBayes.decidirClasse();
+		AlgoritmoBayes.decidirClasse();
 	}
 }
