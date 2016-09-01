@@ -3,7 +3,6 @@
  */
 package programa;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +12,16 @@ import java.util.List;
  */
 public class Dados {
 	//número de atributos é igual ao histograma + id de classe
-	public static final int N_ATRIBUTOS = 256;
+	public static final int N_ATRIBUTOS = 257;
 	public static final String[] NOMES_CLASSES = {"cifar_8","cifar_9"};
 	public static final int N_CLASSES = Dados.NOMES_CLASSES.length;
+	public static int porcentagem = 70;
 
 	// número de exemplos usados, obs: o programa calcula
-	public static int nExemplos = 0;
+	public static int nExemplos;
 	public static int[] nExemplosPorClasse;
+	public static int[] exemplosTreinamento;
+	public static int[] nExemplosTreinamentoPorClasse;
 
 	//probabilidade a priori das classes
 	public static double[] probabilidadesAPriori;
@@ -44,7 +46,10 @@ public class Dados {
 
 	//contém uma lista de uma determinada coluna dos vetores que servem como 
 	// dados
-	private static List<Integer> atributosDaCoordenada;
+	//private static List<Integer> atributosDaCoordenada;
+	
+	//o Integer representa a ordem do exemplo
+	private static List<int[]> atributos;
 	//private static List<Double> densidadesDosAtributos;
 	
 
@@ -52,13 +57,17 @@ public class Dados {
 
 	}
 	public static void instanciarAtributos() {
-		Dados.atributosDaCoordenada = new ArrayList<Integer>();
-		//Dados.probabilidadesAPriori = new double[N_CLASSES];
-		//for (int i = 0; i < Dados.N_CLASSES; i++){
-			//Dados.probabilidadesAPriori[i] = 0.0;
-		//}
+		//Dados.atributosDaCoordenada = new ArrayList<Integer>();
+		Dados.atributos = new ArrayList<int[]>();
 	}
-
+	
+	//obter valores
+	public static List<int[]> getAtributos() {
+		return atributos;
+	}
+	public static int[] getExemplosTreinamento(){
+		return exemplosTreinamento;
+	}
 	public static Double[][] getMedias() {
 		return medias;
 	}
@@ -68,12 +77,6 @@ public class Dados {
 	public static Double[][] getDesviosPadrao() {
 		return desviosPadrao;
 	}
-	public static List<Integer> getAtributosDaCoordenada() {
-		return atributosDaCoordenada;
-	}/*
-	public static List<Double> getDensidadesDosAtributos() {
-		return densidadesDosAtributos;
-	}*/
 	public static Double[][][] getDensidades() {
 		return densidades;
 	}
@@ -83,22 +86,34 @@ public class Dados {
 	public static int[] getClasseMaiorProbabilidade(){
 		return classeMaiorProbabilidade;
 	}
+	public static int[] getNExemplosTreinamentoPorClasse(){
+		return nExemplosTreinamentoPorClasse;
+	}
 	public static Double[][] getProbabilidades(){
 		return probabilidades;
 	}
-
+	
+	//setar valores
+	public static void setarExemplos(List<int[]> exemplos){
+		Dados.atributos = exemplos;
+	}
+	public static void setarExemplo(int[] exemplo){
+		Dados.getAtributos().add(exemplo);
+	}
 	public static void setarNExemplosPorClasse(int[] nExemplosPorClasse){
 		Dados.nExemplosPorClasse = nExemplosPorClasse;
-		setarNExemplosTotal();
 	}
-
-	private static void setarNExemplosTotal(){
-		for (int i = 0; i < Dados.N_CLASSES; i++){
-			Dados.nExemplos = Dados.nExemplos + Dados.nExemplosPorClasse[i];
-		}
+	public static void setarNExemplosTotal(int nEx){
+		Dados.nExemplos = nEx;
 	}
-	public static void setarProbabilidadesAPriori(double[] probabilidadesAPriori){
-		Dados.probabilidadesAPriori = probabilidadesAPriori;
+	public static void setarExemplosTreinamento(int[] exemplos){
+		Dados.exemplosTreinamento = exemplos;
+	}
+	public static void setarNExemplosTreinamentoPorClasse(int[] nExemplosTreinamento){
+		Dados.nExemplosTreinamentoPorClasse = nExemplosTreinamento;
+	}
+	public static void setarProbabilidadesAPriori(double[] priori){
+		Dados.probabilidadesAPriori = priori;
 	}
 	public static void setarProbabilidades(Double[][] probabilidades){
 		Dados.probabilidades = probabilidades;
@@ -106,13 +121,6 @@ public class Dados {
 	public static void setarClasseMaiorProbabilidade(int[] nDaClasse){
 		Dados.classeMaiorProbabilidade = nDaClasse;
 	}
-	//não precisa de coordenada pois ele já vai adicionar no lugar correto
-	public static void setarAtributoDaCoordenadaDoVetor(int valor){
-		Dados.getAtributosDaCoordenada().add(valor);
-	}/*
-	public static void setarDensidades(List<Double> densidades){
-		Dados.densidadesDosAtributos = densidades;
-	}*/
 	public static void setarDensidades(Double[][][] densidades){
 		Dados.densidades = densidades;
 	}
@@ -125,4 +133,21 @@ public class Dados {
 	public static void setarDesviosPadrao(Double[][] desviosPadraoMatriz){
 		Dados.desviosPadrao = desviosPadraoMatriz;
 	}
+	/*
+	public static List<Integer> getAtributosDaCoordenada() {
+		return atributosDaCoordenada;
+	}*/
+	/*
+	public static List<Double> getDensidadesDosAtributos() {
+		return densidadesDosAtributos;
+	}*/
+	
+	//não precisa de coordenada pois ele já vai adicionar no lugar correto
+	/*
+	public static void setarAtributoDaCoordenadaDoVetor(int valor){
+		Dados.getAtributosDaCoordenada().add(valor);
+	}
+	public static void setarDensidades(List<Double> densidades){
+		Dados.densidadesDosAtributos = densidades;
+	}*/
 }
